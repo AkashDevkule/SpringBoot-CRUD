@@ -1,6 +1,5 @@
 package com.employee.service;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,30 +13,46 @@ import com.employee.entities.Emp;
 import com.employee.exception.EmpException;
 import com.employee.repository.EmpRepository;
 
-
-
 @Service(value = "empService")
 @Transactional
-public class EmpServiceImpl implements EmpService{
+public class EmpServiceImpl implements EmpService {
 
-	
 	@Autowired
 	private EmpRepository empRepository;
 
 	@Override
-	public Integer createEmp(EmpDTO emp) {
-		Emp empEntity=new Emp();
-		empEntity.setEmp_id(emp.getEmp_id());
-		empEntity.setEmp_name(emp.getEmp_name());
-		empEntity.setEmp_email(emp.getEmp_email());
-		empEntity.setEmp_mobno(emp.getEmp_mobno());
-		empEntity.setEmp_city(emp.getEmp_city());
-		
-		Emp empEntity2 = empRepository.save(empEntity);
-		System.out.println("These are the details of emp: -");
-		System.out.print(empEntity2);
-		System.out.println("Successfuly added emp is EMP_DB!");
-		return empEntity2.getEmp_id();
+	public void createEmp(EmpDTO emp)throws EmpException {
+
+		boolean isEmailNotPresent = empRepository.findByEmpEmail(emp.getEmp_email()).isEmpty();
+		boolean isMobileNoNotPresent = empRepository.findByEmpMobNo(emp.getEmp_mobno()).isEmpty();
+
+		if (!empRepository.existsById(emp.getEmp_id())) {
+			if (!isMobileNoNotPresent) {
+				if (!isEmailNotPresent) {
+					Emp empEntity = new Emp();
+					empEntity.setEmp_id(emp.getEmp_id());
+					empEntity.setEmp_name(emp.getEmp_name());
+					empEntity.setEmp_email(emp.getEmp_email());
+					empEntity.setEmp_mobno(emp.getEmp_mobno());
+					empEntity.setEmp_city(emp.getEmp_city());
+
+					Emp empEntity2 = empRepository.save(empEntity);
+					System.out.println("These are the details of emp: -");
+					System.out.print(empEntity2);
+					System.out.println("Successfuly added emp is EMP_DB!");
+//					return empEntity2.getEmp_id();
+				} else {
+					
+					throw new EmpException("EmpService.EMPLOYEE_EMAIL_ALREADY_PRESENT");
+				}
+			} else {
+				
+				throw new EmpException("EmpService.EMPLOYEE_MOBILE_NUMBER_ALREADY_PRESENT");
+			}
+		} else {
+			
+			throw new EmpException("EmpService.EMPLOYEE_ID_ALREADY_PRESENT");
+		}
 	}
 
 //	@Override
@@ -57,16 +72,17 @@ public class EmpServiceImpl implements EmpService{
 			throw new EmpException(" User Id can't be null");
 
 		Optional<Emp> optional = empRepository.findById(idToFind);
-		Emp empEntity = optional.orElseThrow(() -> new EmpException(idToFind + " is Not Valid Id.....please enter the valid Id!!"));
-		
-		EmpDTO emp2=new EmpDTO();
-		
+		Emp empEntity = optional
+				.orElseThrow(() -> new EmpException(idToFind + " is Not Valid Id.....please enter the valid Id!!"));
+
+		EmpDTO emp2 = new EmpDTO();
+
 		emp2.setEmp_id(empEntity.getEmp_id());
 		emp2.setEmp_name(empEntity.getEmp_name());
 		emp2.setEmp_email(empEntity.getEmp_email());
 		emp2.setEmp_mobno(empEntity.getEmp_mobno());
 		emp2.setEmp_city(empEntity.getEmp_city());
-		
+
 //		if (optional.isPresent())
 //			// System.out.println("This is the user of ID is 2: -");
 //			return 
@@ -74,15 +90,14 @@ public class EmpServiceImpl implements EmpService{
 
 		return emp2;
 	}
-	
 
 	@Override
-	public List<EmpDTO> findAllEmps()throws EmpException{
-		Iterable<Emp> emps=empRepository.findAll();
-		List<EmpDTO> emp2=new ArrayList<>();
-		
-		emps.forEach(emp ->{
-			EmpDTO empDto=new EmpDTO();
+	public List<EmpDTO> findAllEmps() throws EmpException {
+		Iterable<Emp> emps = empRepository.findAll();
+		List<EmpDTO> emp2 = new ArrayList<>();
+
+		emps.forEach(emp -> {
+			EmpDTO empDto = new EmpDTO();
 			empDto.setEmp_id(emp.getEmp_id());
 			empDto.setEmp_name(emp.getEmp_name());
 			empDto.setEmp_email(emp.getEmp_email());
@@ -90,7 +105,7 @@ public class EmpServiceImpl implements EmpService{
 			empDto.setEmp_city(emp.getEmp_city());
 			emp2.add(empDto);
 		});
-		if(emp2.isEmpty())
+		if (emp2.isEmpty())
 			throw new EmpException("Service.CUSTOMERS_NOT_FOUND");
 		return emp2;
 	}
@@ -122,8 +137,8 @@ public class EmpServiceImpl implements EmpService{
 		Optional<Emp> empFindById = empRepository.findById(idToDelete);
 //		if (!empFindById.isPresent())
 //			throw new EmpException(empFindById + " this Id is not present in DB");
-		
-		Emp emp= empFindById.orElseThrow(()-> new EmpException("Service.CUSTOMERS_NOT_FOUND"));
+
+		Emp emp = empFindById.orElseThrow(() -> new EmpException("Service.CUSTOMERS_NOT_FOUND"));
 		empRepository.deleteById(emp.getEmp_id());
 		System.out.println(empFindById + " is Successfuly deleted! ");
 
