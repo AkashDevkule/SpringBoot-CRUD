@@ -41,13 +41,13 @@ public class EmpRESTController {
 	{
 
 		try {
-			Integer empId = empService.createEmp(emp);
-			String successMessage = environment.getProperty("API.INSERT_SUCCESS") + empId;
+			 empService.createEmp(emp);
+			String successMessage = environment.getProperty("API.INSERT_SUCCESS") + emp.getEmp_id();
 			return new ResponseEntity<>(successMessage, HttpStatus.CREATED);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<String>(environment.getProperty("API.EMPLOYEE_ID_ALREADY_EXITS"),HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 
