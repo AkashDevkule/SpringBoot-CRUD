@@ -1,0 +1,14 @@
+
+INSERT INTO emp('emp_id', 'emp_name', 'emp_email', 'emp_mobno', 'emp_city') VALUES (1,'akash.devkule','akash.devkule@infosys.com','8698732656','Satara')
+
+
+
+
+http://localhost:8080/emps  -> class level url 
+
+http://localhost:8080/emps/emp/create 
+http://localhost:8080/emps/multiemp/create
+http://localhost:8080/emps/id/{id}
+http://localhost:8080/emps/allemps
+http://localhost:8080/emps/update/id/{id}/newDc/{newDc}
+http://localhost:8080/emps/delete/id/{id}
