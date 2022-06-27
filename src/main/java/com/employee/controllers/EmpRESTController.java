@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.employee.DTO.EmpDTO;
 import com.employee.exception.EmpException;
@@ -36,11 +37,18 @@ public class EmpRESTController {
 	}
 	
 	@PostMapping(path = "emp/create")
-	public ResponseEntity<String> createEmp(@RequestBody EmpDTO emp) {
+	public ResponseEntity<String> createEmp(@RequestBody EmpDTO emp)throws EmpException
+	{
 
-		Integer empId = empService.createEmp(emp);
-		String successMessage = environment.getProperty("API.INSERT_SUCCESS") + empId;
-		return new ResponseEntity<>(successMessage, HttpStatus.CREATED);
+		try {
+			Integer empId = empService.createEmp(emp);
+			String successMessage = environment.getProperty("API.INSERT_SUCCESS") + empId;
+			return new ResponseEntity<>(successMessage, HttpStatus.CREATED);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+		}
 	}
 
 //	@PostMapping(path = "multiemp/create")
@@ -50,15 +58,29 @@ public class EmpRESTController {
 
 	@GetMapping(path = "id/{id}")
 	public ResponseEntity<EmpDTO> getEmpById(@PathVariable("id") Integer id) throws EmpException {
-		EmpDTO emp = empService.findEmpById(id);
-		return new ResponseEntity<>(emp, HttpStatus.OK);
+		
+		try {
+			EmpDTO emp = empService.findEmpById(id);
+			
+			return new ResponseEntity<>(emp, HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		
 //		return empService.findEmpById(id);
 	}
 
 	@GetMapping(path = "/allemps")
 	public ResponseEntity<List<EmpDTO>> getAllEmp() throws EmpException {
-		List<EmpDTO> empList = empService.findAllEmps();
-		return new ResponseEntity<>(empList, HttpStatus.OK);
+		try {
+			List<EmpDTO> empList = empService.findAllEmps();
+			return new ResponseEntity<>(empList, HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		}
 	}
 
 	@PutMapping(path = "update/id/{id}/newDc/{newDc}")
