@@ -7,7 +7,7 @@ import com.employee.exception.EmpException;
 
 public interface EmpService {
 
-	public Integer createEmp(EmpDTO emp);
+	public void createEmp(EmpDTO emp) throws EmpException;
 //	public void createEmps(Iterable<EmpDTO> emps);
 	public EmpDTO findEmpById(Integer idToFind) throws EmpException;
 	public List<EmpDTO> findAllEmps() throws EmpException;
