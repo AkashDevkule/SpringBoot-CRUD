@@ -8,6 +8,6 @@ import com.employee.entities.Emp;
 
 public interface EmpRepository extends CrudRepository<Emp, Integer> {
 
-	public Optional<Emp> findByEmpEmail(String email);
-	public Optional<Emp> findByEmpMobNo(Long mobno);
+	public Optional<Emp> findByEmail(String email);
+	public Optional<Emp> findByMobno(Long mobno);
 }
