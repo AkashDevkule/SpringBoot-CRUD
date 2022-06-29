@@ -23,8 +23,8 @@ public class EmpServiceImpl implements EmpService {
 	@Override
 	public void createEmp(EmpDTO emp)throws EmpException {
 
-		boolean isEmailNotPresent = empRepository.findByEmpEmail(emp.getEmp_email()).isEmpty();
-		boolean isMobileNoNotPresent = empRepository.findByEmpMobNo(emp.getEmp_mobno()).isEmpty();
+		boolean isEmailNotPresent = empRepository.findByEmail(emp.getEmp_email()).isEmpty();
+		boolean isMobileNoNotPresent = empRepository.findByMobno(emp.getEmp_mobno()).isEmpty();
 
 		if (!empRepository.existsById(emp.getEmp_id())) {
 			if (!isMobileNoNotPresent) {
@@ -32,8 +32,8 @@ public class EmpServiceImpl implements EmpService {
 					Emp empEntity = new Emp();
 					empEntity.setEmp_id(emp.getEmp_id());
 					empEntity.setEmp_name(emp.getEmp_name());
-					empEntity.setEmp_email(emp.getEmp_email());
-					empEntity.setEmp_mobno(emp.getEmp_mobno());
+					empEntity.setEmail(emp.getEmp_email());
+					empEntity.setMobno(emp.getEmp_mobno());
 					empEntity.setEmp_city(emp.getEmp_city());
 
 					Emp empEntity2 = empRepository.save(empEntity);
@@ -79,7 +79,7 @@ public class EmpServiceImpl implements EmpService {
 
 		emp2.setEmp_id(empEntity.getEmp_id());
 		emp2.setEmp_name(empEntity.getEmp_name());
-		emp2.setEmp_email(empEntity.getEmp_email());
+		emp2.setEmp_email(empEntity.getEmail());
 		emp2.setEmp_mobno(empEntity.getEmp_mobno());
 		emp2.setEmp_city(empEntity.getEmp_city());
 
@@ -100,7 +100,7 @@ public class EmpServiceImpl implements EmpService {
 			EmpDTO empDto = new EmpDTO();
 			empDto.setEmp_id(emp.getEmp_id());
 			empDto.setEmp_name(emp.getEmp_name());
-			empDto.setEmp_email(emp.getEmp_email());
+			empDto.setEmp_email(emp.getEmail());
 			empDto.setEmp_mobno(emp.getEmp_mobno());
 			empDto.setEmp_city(emp.getEmp_city());
 			emp2.add(empDto);
