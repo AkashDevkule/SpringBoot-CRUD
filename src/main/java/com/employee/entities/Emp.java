@@ -19,10 +19,10 @@ public class Emp {
 	private String emp_name;
 	
 	@Column(name="emp_email")
-	private String emp_email;
+	private String email;
 	
 	@Column(name="emp_mobno")
-	private long emp_mobno;
+	private long mobno;
 	
 	@Column(name="emp_city")
 	private String emp_city;
@@ -36,8 +36,8 @@ public class Emp {
 		super();
 		this.emp_id = emp_id;
 		this.emp_name = emp_name;
-		this.emp_email = emp_email;
-		this.emp_mobno = emp_mobno;
+		this.email = emp_email;
+		this.mobno = emp_mobno;
 		this.emp_city = emp_city;
 	}
 	public int getEmp_id() {
@@ -52,17 +52,17 @@ public class Emp {
 	public void setEmp_name(String emp_name) {
 		this.emp_name = emp_name;
 	}
-	public String getEmp_email() {
-		return emp_email;
+	public String getEmail() {
+		return email;
 	}
-	public void setEmp_email(String emp_email) {
-		this.emp_email = emp_email;
+	public void setEmail(String emp_email) {
+		this.email = emp_email;
 	}
 	public long getEmp_mobno() {
-		return emp_mobno;
+		return mobno;
 	}
-	public void setEmp_mobno(long emp_mobno) {
-		this.emp_mobno = emp_mobno;
+	public void setMobno(long emp_mobno) {
+		this.mobno = emp_mobno;
 	}
 	public String getEmp_city() {
 		return emp_city;
@@ -72,8 +72,8 @@ public class Emp {
 	}
 	@Override
 	public String toString() {
-		return "Emp [emp_id=" + emp_id + ", emp_name=" + emp_name + ", emp_email=" + emp_email + ", emp_mobno="
-				+ emp_mobno + ", emp_city=" + emp_city + "]";
+		return "Emp [emp_id=" + emp_id + ", emp_name=" + emp_name + ", emp_email=" + email + ", emp_mobno="
+				+ mobno + ", emp_city=" + emp_city + "]";
 	}
 	
 	
